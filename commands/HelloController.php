@@ -7,6 +7,9 @@
 
 namespace app\commands;
 
+use app\models\CalculatorForm;
+use Yii;
+use yii\bootstrap5\Html;
 use yii\console\Controller;
 use yii\console\ExitCode;
 
@@ -25,10 +28,26 @@ class HelloController extends Controller
      * @param string $message the message to be echoed.
      * @return int Exit code
      */
-    public function actionIndex($message = 'hello world')
+    public function actionIndex()
     {
-        echo $message . "\n";
+
+        $basePath = __DIR__ . '/../runtime/queue.job';
+        while (true)
+        {
+            echo 'Текущая итерация: ' . $counter . PHP_EOL;
+
+            if (file_exists($basePath) === true)
+            {
+                $data = file_get_contents($basePath);
+                echo $data . PHP_EOL;
+                unlink($basePath);
+            }
+
+            sleep(2);
+            $counter++;
+        }
 
         return ExitCode::OK;
     }
+
 }
