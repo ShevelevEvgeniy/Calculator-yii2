@@ -46,6 +46,7 @@ $config = [
                     'levels' => ['error', 'warning'],
                 ],
             ],
+
         ],
         'db' => $db,
         /*

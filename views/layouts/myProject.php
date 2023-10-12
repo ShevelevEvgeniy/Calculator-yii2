@@ -4,6 +4,7 @@
 /** @var string $content */
 
 use app\assets\AppAsset;
+use app\widgets\Alert;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
@@ -24,8 +25,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="d-flex flex-column h-100 bg-light">
 <?php $this->beginBody() ?>
+<body class="d-flex flex-column h-100 bg-light"
 
 <header id="header">
     <?php
@@ -42,7 +43,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
     echo Nav::widget([
         'options' => [
-            'class' => 'navbar-nav gap-5'],
+            'class' => 'navbar-nav'],
         'items' => [
             ['label' => 'Расчет доставки',
                 'url' => Yii::$app->homeUrl,
@@ -59,7 +60,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 
 <footer id="footer" class="mt-auto py-3 bg-white border-3 border-white rounded-2 shadow">
     <div class="container">
-        <div id="footerText" class="row text-muted">
+        <div class="row footerText">
             <a class="logo" href=""> </a>
             <div class="col-md-6 text-center text-md-start">&copy; ЭФКО стартер-0.0.6 </div>
             <div class="col-md-6 text-center text-md-end text-dark">2023</div>

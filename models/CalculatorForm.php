@@ -1,34 +1,34 @@
 <?php
-
 namespace app\models;
-
+use Yii;
 use yii\base\Model;
 
 class CalculatorForm extends Model
 {
-    public $material_id;
-    public $tonnage_id;
-    public $month_id;
-    public $materials = ['шрот', 'жмых', 'соя',];
-    public $tonnages = [25, 50, 75, 100];
-    public $months = ['январь', 'февраль', 'август', 'сентябрь', 'октябрь', 'ноябрь',];
+    public $type;
+    public $tonnage;
+    public $month;
 
     public function rules()
     {
-         return
+        $prices = Yii::$app->params['prices'];
+        $errorMessege = 'не найден прайс для значения';
+        return
              [
-                 [['month_id', 'material_id', 'tonnage_id'], 'required'],
+                 [['month', 'type', 'tonnage'], 'required', 'message' => "необходимо ввести {attribute}"],
+                 [['month'], 'in', 'range' => array_keys($prices['шрот'][25]), 'message' =>  $errorMessege],
+                 [['type'], 'in', 'range' => array_keys($prices), 'message' =>  $errorMessege],
+                 [['tonnage'], 'in', 'range' => array_keys($prices['шрот']), 'message' =>  $errorMessege],
              ];
     }
 
-/*    public function attributeLabels()
+    public function attributeLabels()
     {
         return [
-            'month_id' => 'месяц',
-            'material_id' => 'тип сырья',
-            'tonnage_id' => 'тоннаж',
+            'month' => 'месяц',
+            'type' => 'тип сырья',
+            'tonnage' => 'тоннаж',
         ];
-    }*/
-
+    }
 
 }
