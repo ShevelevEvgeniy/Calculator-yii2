@@ -5,12 +5,12 @@
 /** @var app\models\CalculatorForm $model */
 
 /** @var $prices */
+/** @var $result */
 
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
 
-$this->title = 'Contact';
-/*$this->params['breadcrumbs'][] = $this->title;*/
+$this->title = 'Calculator';
 ?>
 
 
@@ -62,13 +62,7 @@ $this->title = 'Contact';
 
             <div class = 'col d-flex align-items-center results'>
                 <?php
-                if ($model->load(YII::$app->request->post())) {
-                    echo Html::tag('div', "Стоимость составит - " . $prices[$model->type]
-                        [$model->tonnage]
-                        [$model->month],
-                        ['class' => 'col'],
-                    );
-                }
+                    echo $result;
                 ?>
             </div>
         </div>
