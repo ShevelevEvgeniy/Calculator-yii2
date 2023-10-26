@@ -11,10 +11,12 @@ class ProcessController extends Controller
     public function actionQueueResults(){
         $counter = 0;
         $basePath = __DIR__ . '/../runtime/queue.job';
-        while (true) {
+        while (true)
+        {
             echo 'Текущая итерация: ' . $counter . PHP_EOL;
 
-            if (file_exists($basePath) === true) {
+            if (file_exists($basePath) === true)
+            {
                 $data = file_get_contents($basePath);
                 echo $data . PHP_EOL;
                 unlink($basePath);
