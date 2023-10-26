@@ -15,7 +15,8 @@ class MySiteController extends Controller
     {
         $prices = Yii::$app->params['prices'];
         $model = new CalculatorForm();
-        if ($model->load(YII::$app->request->post()) && $model->validate()) {
+        if ($model->load(YII::$app->request->post()) && $model->validate())
+        {
             file_put_contents('../runtime/queue.job', "month = $model->month \ntype = $model->type \ntonnage = $model->tonnage");
             $result = Html::tag('div', "Стоимость составит - " . $prices[$model->type]
                 [$model->tonnage]
@@ -26,6 +27,4 @@ class MySiteController extends Controller
         };
        return $this->render('calculator',  ['model' => $model, 'prices' => $prices]);
     }
-
-
 }

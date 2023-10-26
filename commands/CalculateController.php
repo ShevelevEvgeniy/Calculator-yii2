@@ -28,16 +28,19 @@ class CalculateController extends Controller
         $model->type = $this->type;
         $model->tonnage = $this->tonnage;
         $value = ['tonnage' => $model->tonnage, 'type' => $model->type, 'month' => $model->month];
-        if ($model->validate()) {
+        if ($model->validate())
+        {
             echo 'месяц - ' . $this->month . PHP_EOL .
                 'тип - ' . $this->type . PHP_EOL .
                 'тоннаж - ' . $this->tonnage . PHP_EOL .
                 'результат - ' . $prices[$this->type][$this->tonnage][$this->month] . PHP_EOL;
             $rows = [];
-            foreach ($prices[$model->type] as $key => $value){
+            foreach ($prices[$model->type] as $key => $value)
+            {
                 $rows_add = [];
                 $rows_add[] = $key;
-                foreach ($prices[$model->type][$key] as $key2 => $value2){
+                foreach ($prices[$model->type][$key] as $key2 => $value2)
+                {
                     $rows_add[] = $value2;
                 }
                 $rows[] =  $rows_add;
@@ -48,9 +51,11 @@ class CalculateController extends Controller
                 ],
             );
             echo Console::ansiFormat($table, [BaseConsole::FG_YELLOW]);
-        } else {
+        } else
+        {
             $message = "выполнение команды завершено с ошибкой. " . PHP_EOL;
-            foreach ($model->getErrors() as $parameter => $arrMessage) {
+            foreach ($model->getErrors() as $parameter => $arrMessage)
+            {
                 $message .= array_reduce($arrMessage, fn($prevMessage, $nextMassege) =>
                     $prevMessage . $nextMassege . ($value[$parameter] !== "" ? " --$parameter" . "=" . $value[$parameter] : ""), ''). PHP_EOL;
             }

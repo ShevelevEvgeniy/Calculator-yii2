@@ -30,5 +30,4 @@ class CalculatorForm extends Model
             'tonnage' => 'тоннаж',
         ];
     }
-
 }
