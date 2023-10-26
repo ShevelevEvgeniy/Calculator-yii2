@@ -9,6 +9,7 @@
 
 use yii\bootstrap5\ActiveForm;
 use yii\bootstrap5\Html;
+use app\models\CalculatorForm;
 
 $this->title = 'Calculator';
 ?>
@@ -111,5 +112,6 @@ $this->title = 'Calculator';
         </div>
     </div>
 <?php endif; ?>
+
 
 

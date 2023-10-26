@@ -14,13 +14,16 @@ $config = [
 
 
 	'defaultRoute' => 'my-site/calculator',
-    	'layout' => 'myProject',
+    'layout' => 'myProject',
 
 
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'HLl4xCeG7oDbXDRAL6Dva_9J6Pt-xF4d',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser',
+            ]
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -49,14 +52,19 @@ $config = [
 
         ],
         'db' => $db,
-        /*
+
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'class' => 'yii\rest\UrlRule',
+                'controller' => "api/v1/calculate-prices",
             ],
         ],
-        */
+
+
+
     ],
     'params' => $params,
 ];
