@@ -5,29 +5,28 @@ use yii\base\Model;
 
 class CalculatorForm extends Model
 {
-    public $type;
-    public $tonnage;
-    public $month;
+    public $raw_type_id;
+    public $tonnage_id;
+    public $month_id;
 
     public function rules()
     {
-        $prices = Yii::$app->params['prices'];
         $errorMessege = 'не найден прайс для значения';
         return
              [
-                 [['month', 'type', 'tonnage'], 'required', 'message' => "необходимо ввести {attribute}"],
-                 [['month'], 'in', 'range' => array_keys($prices['шрот'][25]), 'message' =>  $errorMessege],
-                 [['type'], 'in', 'range' => array_keys($prices), 'message' =>  $errorMessege],
-                 [['tonnage'], 'in', 'range' => array_keys($prices['шрот']), 'message' =>  $errorMessege],
+                 [['month_id', 'raw_type_id', 'tonnage_id'], 'required', 'message' => "необходимо ввести {attribute}"],
+                 [['month_id'], 'in', 'range' => Months::find()->select('id')->asArray()->column(), 'message' => $errorMessege],
+                 [['raw_type_id'], 'in', 'range' => RawTypes::find()->select('id')->asArray()->column(), 'message' => $errorMessege],
+                 [['tonnage_id'], 'in', 'range' => Tonnages::find()->select('id')->asArray()->column(), 'message' => $errorMessege],
              ];
     }
 
     public function attributeLabels()
     {
         return [
-            'month' => 'месяц',
-            'type' => 'тип сырья',
-            'tonnage' => 'тоннаж',
+            'month_id' => 'месяц',
+            'raw_type_id' => 'тип сырья',
+            'tonnage_id' => 'тоннаж',
         ];
     }
 }
