@@ -86,3 +86,15 @@ a.desc:after {
 .form-group {
     margin-bottom: 1rem;
 }
+
+html, body {
+    height: 100%;
+}
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+#main {
+    flex: 1;
+}

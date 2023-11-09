@@ -3,22 +3,18 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
+
+/** @property $name */
 
 class Months extends ActiveRecord
 {
-    public static function findById($id)
+    public function rules():array
     {
-        return self::find()->select('name')->where(['id' => $id])->scalar();
-    }
-
-    public static function getIdAndName()
-    {
-        return ArrayHelper::map(self::find()->select('name, id')->asArray()->all(), 'id', 'name');
-    }
-
-    public static function getIdByName($name)
-    {
-        return self::find()->select('id')->where(['name' => $name])->scalar();
+        return
+        [
+            [['name'], 'required', 'message' => "необходимо ввести {attribute}"],
+            [['name'], 'string', 'message' => 'некорректное значение {attribute}'],
+            [['name'], 'in', 'range'  => Repository::getMonthsList(), 'not' => true, 'message' => 'данный {attribute} уже существует'],
+        ];
     }
 }
