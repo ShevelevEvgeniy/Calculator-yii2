@@ -13,8 +13,7 @@ $config = [
     ],
 
 
-	'defaultRoute' => 'my-site/calculator',
-    'layout' => 'myProject',
+	'defaultRoute' => 'site/calculator',
 
 
     'components' => [
@@ -57,9 +56,10 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'class' => 'yii\rest\UrlRule',
-                'controller' => "api/v1/calculate-prices",
-            ],
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => "api/v1",
+                    'api/v1/json-schema' => 'api/get-spec'
+                ],
         ],
 
 

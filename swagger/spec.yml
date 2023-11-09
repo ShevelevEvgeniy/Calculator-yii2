@@ -1,0 +1,285 @@
+openapi: "3.0.3"
+info:
+  title: API Калькулятор расчета стоимости доставки
+  version: 1.0.0
+  description: |
+    *Калькулятор расчета стоимости доставки* - сервис расчета стоимости доставки
+    ### возможности сервиса
+      - расчет стоимости доставки
+      - реестр месяцев доставки
+      - реестр тоннажей доставки
+      - реестр типов сырья доставки
+      - реестр стоимости доставки
+    
+    Разработчик [{Евгений Шевелев}] ({https://gitlab-dev.efko.ru/})
+tags:
+  - name: calculate
+    description: расчет стоимости
+  - name: months
+    description: реестр месяцев
+  - name: tonnages
+    description: реестр тоннажей
+  - name: types
+    description: реестр типов сырья
+  - name: prices
+    description: реестр стоимости
+paths:
+  /api/v1/months:
+    get:
+      tags:
+        - months
+      summary: Получить список месяцев
+      responses:
+        '200':
+          $ref: '#/components/responses/MonthSuccessfulResponse'
+
+    post:
+      tags:
+        - months
+      summary: Добавить месяц
+      requestBody:
+        $ref: '#/components/requestBodies/MonthData'
+      responses:
+        '200':
+          description: успешное добавление
+        '400':
+          description: некорректный запрос
+
+    delete:
+      tags:
+        - months
+      summary: Удалить месяц по имени
+      parameters:
+        - $ref: '#/components/parameters/MonthParameter'
+      responses:
+        '200':
+          description: успешное удаление
+        '400':
+          description: некорректный запрос
+
+  /api/v1/tonnages:
+    get:
+      tags:
+        - tonnages
+      summary: Получить список тоннажей
+      responses:
+        '200':
+          $ref: '#/components/responses/TonnagesSuccessfulResponse'
+
+    post:
+      tags:
+        - tonnages
+      summary: Добавить тоннаж
+      requestBody:
+        $ref: '#/components/requestBodies/TonnageRequestBodies'
+      responses:
+        '200':
+          description: успешное добавление
+        '400':
+          description: некорректный запрос
+
+    delete:
+      tags:
+        - tonnages
+      summary: Удалить тоннаж по значению
+      parameters:
+        - $ref: '#/components/parameters/TonnageParameter'
+      responses:
+        '200':
+          description: успешное удаление
+        '400':
+          description: некорректный запрос
+
+  /api/v1/types:
+    get:
+      tags:
+        - types
+      summary: Получить список типов сырья
+      responses:
+        '200':
+          $ref: '#/components/responses/TypesSuccessfulResponse'
+
+    post:
+      tags:
+        - types
+      summary: Добавить тип сырья
+      requestBody:
+        $ref: '#/components/requestBodies/RawTypeRequestBodies'
+      responses:
+        '200':
+          description: успешное добавление
+        '400':
+          description: некорректный запрос
+
+    delete:
+      tags:
+        - types
+      summary: Удалить тип сырья по значению
+      parameters:
+        - $ref: '#/components/parameters/RawTypeParameter'
+      responses:
+        '200':
+          description: успешное удаление
+        '400':
+          description: некорректный запрос
+
+  /api/v1/calculate:
+    get:
+      tags:
+        - calculate
+      summary: Рассчитать цену
+      parameters:
+        - $ref: '#/components/parameters/MonthParameter'
+        - $ref: '#/components/parameters/RawTypeParameter'
+        - $ref: '#/components/parameters/TonnageParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulCalculationResponse'
+        '400':
+          description: некорректный запрос
+
+    post:
+      tags:
+        - prices
+      summary: Добавить цену
+      requestBody:
+        $ref: '#/components/requestBodies/PriceRequestBodies'
+      responses:
+        '200':
+          description: успешное добавление
+        '400':
+          description: некорректный запрос
+
+    put:
+      tags:
+        - prices
+      summary: Обновить цену
+      parameters:
+        - $ref: '#/components/requestBodies/PriceRequestBodies'
+      responses:
+        '200':
+          description: успешное обновление
+        '400':
+          description: некорректный запрос
+
+components:
+  requestBodies:
+    MonthData:
+      description: Данные месяца для добавления
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              month:
+                type: string
+                example: "март"
+    TonnageRequestBodies:
+      description: Данные тоннажа для добавления
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              month:
+                type: integer
+                example: 100
+    RawTypeRequestBodies:
+      description: Данные типа сырья для добавления
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              month:
+                type: string
+                example: "шрот"
+    PriceRequestBodies:
+      description: Данные по стоимости
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              raw_type:
+                type: string
+                example: "соя"
+              month:
+                type: string
+                example: "январь"
+              tonnage:
+                type: integer
+                example: 100
+              value:
+                type: integer
+                example: 176
+
+  responses:
+    MonthSuccessfulResponse:
+      description: Успешный ответ
+      content:
+        application/json:
+          example:
+            - "январь"
+            - "февраль"
+            - "март"
+    TonnagesSuccessfulResponse:
+      description: Успешный ответ
+      content:
+        application/json:
+          example:
+            - 25
+            - 50
+            - 75
+            - 100
+    TypesSuccessfulResponse:
+      description: Успешный ответ
+      content:
+        application/json:
+          example:
+            - "жмых"
+            - "соя"
+            - "шрот"
+    SuccessfulCalculationResponse:
+      description: Успешный ответ
+      content:
+        application/json:
+          example:
+            price: 100
+            price_list:
+              жмых:
+                январь:
+                  25: 100
+                  50: 145
+                  75: 162
+                  100: 176
+
+  parameters:
+    MonthParameter:
+      name: month
+      in: query
+      required: true
+      schema:
+        type: string
+        example: "январь"
+    TonnageParameter:
+      name: tonnage
+      in: query
+      required: true
+      schema:
+        type: integer
+        example: 50
+    RawTypeParameter:
+      name: type
+      in: query
+      required: true
+      schema:
+        type: string
+        example: "шрот"
+
+
+

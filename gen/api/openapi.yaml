@@ -1,0 +1,371 @@
+openapi: 3.0.3
+info:
+  description: |
+    *Калькулятор расчета стоимости доставки* - сервис расчета стоимости доставки
+    ### возможности сервиса
+      - расчет стоимости доставки
+      - реестр месяцев доставки
+      - реестр тоннажей доставки
+      - реестр типов сырья доставки
+      - реестр стоимости доставки
+
+    Разработчик [{Евгений Шевелев}] ({https://gitlab-dev.efko.ru/})
+  title: API Калькулятор расчета стоимости доставки
+  version: 1.0.0
+servers:
+- url: /
+tags:
+- description: расчет стоимости
+  name: calculate
+- description: реестр месяцев
+  name: months
+- description: реестр тоннажей
+  name: tonnages
+- description: реестр типов сырья
+  name: types
+- description: реестр стоимости
+  name: prices
+paths:
+  /api/v1/months:
+    delete:
+      parameters:
+      - explode: true
+        in: query
+        name: month
+        required: true
+        schema:
+          example: январь
+          type: string
+        style: form
+      responses:
+        "200":
+          description: успешное удаление
+        "401":
+          description: не авторизован
+      summary: Удалить месяц по имени
+      tags:
+      - months
+      x-accepts: application/json
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+              - январь
+              - февраль
+              - март
+          description: Успешный ответ
+        "401":
+          description: не авторизован
+      summary: Получить список месяцев
+      tags:
+      - months
+      x-accepts: application/json
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/MonthData'
+      responses:
+        "200":
+          description: успешное добавление
+        "401":
+          description: не авторизован
+      summary: Добавить месяц
+      tags:
+      - months
+      x-contentType: application/json
+      x-accepts: application/json
+  /api/v1/tonnages:
+    delete:
+      parameters:
+      - explode: true
+        in: query
+        name: tonnage
+        required: true
+        schema:
+          example: 50
+          type: integer
+        style: form
+      responses:
+        "200":
+          description: успешное удаление
+        "401":
+          description: не авторизован
+      summary: Удалить тоннаж по значению
+      tags:
+      - tonnages
+      x-accepts: application/json
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+              - 25
+              - 50
+              - 75
+              - 100
+          description: Успешный ответ
+        "401":
+          description: не авторизован
+      summary: Получить список тоннажей
+      tags:
+      - tonnages
+      x-accepts: application/json
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/TonnageRequestBodies'
+      responses:
+        "200":
+          description: успешное добавление
+        "401":
+          description: не авторизован
+      summary: Добавить тоннаж
+      tags:
+      - tonnages
+      x-contentType: application/json
+      x-accepts: application/json
+  /api/v1/types:
+    delete:
+      parameters:
+      - explode: true
+        in: query
+        name: type
+        required: true
+        schema:
+          example: шрот
+          type: string
+        style: form
+      responses:
+        "200":
+          description: успешное удаление
+        "401":
+          description: не авторизован
+      summary: Удалить тип сырья по значению
+      tags:
+      - types
+      x-accepts: application/json
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+              - жмых
+              - соя
+              - шрот
+          description: Успешный ответ
+        "401":
+          description: не авторизован
+      summary: Получить список типов сырья
+      tags:
+      - types
+      x-accepts: application/json
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/RawTypeRequestBodies'
+      responses:
+        "200":
+          description: успешное добавление
+        "401":
+          description: не авторизован
+      summary: Добавить тип сырья
+      tags:
+      - types
+      x-contentType: application/json
+      x-accepts: application/json
+  /api/v1/calculate:
+    get:
+      parameters:
+      - explode: true
+        in: query
+        name: month
+        required: true
+        schema:
+          example: январь
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: type
+        required: true
+        schema:
+          example: шрот
+          type: string
+        style: form
+      - explode: true
+        in: query
+        name: tonnage
+        required: true
+        schema:
+          example: 50
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              example:
+                price: 100
+                price_list:
+                  жмых:
+                    январь:
+                      "25": 100
+                      "50": 145
+                      "75": 162
+                      "100": 176
+          description: Успешный ответ
+        "401":
+          description: не авторизован
+      summary: Рассчитать цену
+      tags:
+      - calculate
+      x-accepts: application/json
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/PriceRequestBodies'
+      responses:
+        "200":
+          description: успешное добавление
+        "401":
+          description: не авторизован
+      summary: Добавить цену
+      tags:
+      - prices
+      x-contentType: application/json
+      x-accepts: application/json
+    put:
+      parameters: []
+      responses:
+        "200":
+          description: успешное обновление
+        "401":
+          description: не авторизован
+      summary: Обновить цену
+      tags:
+      - prices
+      x-accepts: application/json
+components:
+  parameters:
+    MonthParameter:
+      explode: true
+      in: query
+      name: month
+      required: true
+      schema:
+        example: январь
+        type: string
+      style: form
+    TonnageParameter:
+      explode: true
+      in: query
+      name: tonnage
+      required: true
+      schema:
+        example: 50
+        type: integer
+      style: form
+    RawTypeParameter:
+      explode: true
+      in: query
+      name: type
+      required: true
+      schema:
+        example: шрот
+        type: string
+      style: form
+  requestBodies:
+    MonthData:
+      content:
+        application/json:
+          schema:
+            properties:
+              month:
+                example: март
+                type: string
+            type: object
+      description: Данные месяца для добавления
+      required: true
+    TonnageRequestBodies:
+      content:
+        application/json:
+          schema:
+            properties:
+              month:
+                example: 100
+                type: integer
+            type: object
+      description: Данные тоннажа для добавления
+      required: true
+    RawTypeRequestBodies:
+      content:
+        application/json:
+          schema:
+            properties:
+              month:
+                example: шрот
+                type: string
+            type: object
+      description: Данные типа сырья для добавления
+      required: true
+    PriceRequestBodies:
+      content:
+        application/json:
+          schema:
+            properties:
+              raw_type:
+                example: соя
+                type: string
+              month:
+                example: январь
+                type: string
+              tonnage:
+                example: 100
+                type: integer
+              value:
+                example: 176
+                type: integer
+            type: object
+      description: Данные по стоимости
+      required: true
+  responses:
+    MonthSuccessfulResponse:
+      content:
+        application/json:
+          example:
+          - январь
+          - февраль
+          - март
+      description: Успешный ответ
+    TonnagesSuccessfulResponse:
+      content:
+        application/json:
+          example:
+          - 25
+          - 50
+          - 75
+          - 100
+      description: Успешный ответ
+    TypesSuccessfulResponse:
+      content:
+        application/json:
+          example:
+          - жмых
+          - соя
+          - шрот
+      description: Успешный ответ
+    SuccessfulCalculationResponse:
+      content:
+        application/json:
+          example:
+            price: 100
+            price_list:
+              жмых:
+                январь:
+                  "25": 100
+                  "50": 145
+                  "75": 162
+                  "100": 176
+      description: Успешный ответ
+  schemas: {}
+

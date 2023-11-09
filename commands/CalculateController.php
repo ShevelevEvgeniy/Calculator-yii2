@@ -2,10 +2,7 @@
 namespace app\commands;
 
 use app\models\CalculatorFormForApi;
-use app\models\Months;
-use app\models\Prices;
-use app\models\RawTypes;
-use app\models\Tonnages;
+use app\models\Repository;
 use yii\console\Controller;
 use yii\console\widgets\Table;
 use yii\helpers\BaseConsole;
@@ -34,49 +31,42 @@ class CalculateController extends Controller
             echo 'месяц - ' . $this->month . PHP_EOL .
                 'тип - ' . $this->raw_type . PHP_EOL .
                 'тоннаж - ' . $this->tonnage . PHP_EOL .
-                'результат - ' . $price = Prices::findByParams(
-                    RawTypes::getIdByName($model->raw_type),
-                    Tonnages::getIdByValue($model->tonnage),
-                    Months::getIdByName($model->month)) . PHP_EOL;
+                'результат - ' . Repository::getResultPriceByNames($model->month, $model->tonnage, $model->raw_type) . PHP_EOL;
+            $month_string = [];
             $rows = [];
-            foreach (Tonnages::getIdAndName() as $key => $value) {
-                $add_rows = [];
-                $add_rows[] = $value;
-                foreach (Prices::find()->select('price')->where(
-                    [
-                        'raw_type_id' => RawTypes::getIdByName($model->raw_type),
-                        'tonnage_id' => $key,
-                    ]
-                    )->asArray()->all() as $key2 => $value2) {
-                            $add_rows[] = $value2;
-                        }
-                $rows[] = $add_rows;
+            foreach (Repository::getListPricesByType($model->raw_type) as $months => $value) {
+                $month_string[] = $months;
+                foreach ($value as $tonnage => $price) {
+                    if(!array_key_exists($tonnage, $rows)) {
+                        $rows[$tonnage][] = $tonnage;
+                    }
+                    $rows[$tonnage][] = $price;
+                }
             }
             $table = Table::widget([
-                'headers' => array_merge(['м/т'], Months::getIdAndName()),
+                'headers' => array_merge(['м/т'], $month_string),
                 'rows' => $rows,
                 ],
             );
+
             echo Console::ansiFormat($table, [BaseConsole::FG_YELLOW]);
 
-        } else {
-            $value = [
-                'tonnage' => $this->tonnage,
-                'raw_type' => $this->raw_type,
-                'month' => $this->month
-            ];
-
-            $message = "выполнение команды завершено с ошибкой. " . PHP_EOL;
-            foreach ($model->getErrors() as $parameter => $arrMessage) {
-                $message .= array_reduce($arrMessage, fn($prevMessage, $nextMassege) =>
-                    $prevMessage . $nextMassege .
-                    (
-                        $value[$parameter] !== "" ? " --$parameter" . "=" . $value[$parameter] : ""
-                    ), ''). PHP_EOL;
-            }
-            $message .= 'проверьте корректность введенных значений' . PHP_EOL;
-            echo Console::ansiFormat($message, [BaseConsole::FG_RED]);
         }
-    }
+        $value = [
+            'tonnage' => $this->tonnage,
+            'raw_type' => $this->raw_type,
+            'month' => $this->month
+        ];
 
+        $message = "выполнение команды завершено с ошибкой. " . PHP_EOL;
+        foreach ($model->getErrors() as $parameter => $arrMessage) {
+            $message .= array_reduce($arrMessage, fn($prevMessage, $nextMassege) =>
+                $prevMessage . $nextMassege .
+                (
+                    $value[$parameter] !== "" ? " --$parameter" . "=" . $value[$parameter] : ""
+                ), ''). PHP_EOL;
+        }
+        $message .= 'проверьте корректность введенных значений' . PHP_EOL;
+        return Console::ansiFormat($message, [BaseConsole::FG_RED]);
+    }
 }

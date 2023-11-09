@@ -4,16 +4,25 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
+/**
+ * show off @property
+ * @property $month_id
+ * @property $tonnage_id
+ * @property $raw_type_id
+ * @property $price
+ */
+
 class Prices extends ActiveRecord
 {
-    public static function findByParams(int $month_id, int $raw_type_id, int $tonnage_id)
+    public function rules():array
     {
-        return self::find()->select('price')->where([
-            'month_id' => $month_id,
-            'raw_type_id' => $raw_type_id,
-            'tonnage_id' => $tonnage_id
-        ])->scalar();
+        return
+            [
+                [['price', 'month_id', 'raw_type_id', 'tonnage_id'], 'required', 'message' => "необходимо ввести {attribute}"],
+                [['price'], 'integer', 'message' => 'не корректное значение {attribute}'],
+                [['month_id'], 'in', 'range' => array_keys(Repository::getMonthsList()), 'message' => 'некорректное значение month'],
+                [['raw_type_id'], 'in', 'range' => array_keys(Repository::getRawTypesList()), 'message' => 'некорректное значение type'],
+                [['tonnage_id'], 'in', 'range' => array_keys(Repository::getTonnagesList()), 'message' => 'некорректное значение tonnage'],
+            ];
     }
 }
-
-
