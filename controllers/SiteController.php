@@ -10,7 +10,7 @@ use yii\web\Controller;
 
 class SiteController extends Controller
 {
-    public function actions():array
+    public function actions(): array
     {
         return [
             'error' => [
@@ -36,14 +36,6 @@ class SiteController extends Controller
                 "month = " . $model->month . PHP_EOL .
                 "type = " . $model->raw_type . PHP_EOL .
                 "tonnage = " . $model->tonnage . PHP_EOL);
-
-            $result = Html::tag('div', "Стоимость составит - " .
-                Repository::getResultPriceByNames($model->month, $model->tonnage, $model->raw_type),
-                ['class' => 'col'],
-            );
-
-
-            return $this->render('calculator', compact('model', 'months', 'raw_types', 'tonnages', 'result'));
         };
         return $this->render('calculator', compact('model', 'months', 'raw_types', 'tonnages'));
     }

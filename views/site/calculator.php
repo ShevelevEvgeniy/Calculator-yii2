@@ -67,9 +67,13 @@ $this->title = 'Calculator';
         </div>
 
         <div class = 'col d-flex align-items-center results'>
+            <div class="col">
             <?php
-            echo $result;
+            if($model->load(YII::$app->request->post())) {
+                echo "Стоимость составит - " . Repository::getResultPriceByNames($model->month, $model->tonnage, $model->raw_type);
+            }
             ?>
+            </div>
         </div>
     </div>
 
