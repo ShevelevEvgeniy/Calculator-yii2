@@ -3,20 +3,18 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
+
+/** @property $value */
 
 class Tonnages extends ActiveRecord
 {
-    public static function findById($id)
+    public function rules():array
     {
-        return self::find()->select('value')->where(['id' => $id])->scalar();
-    }
-    public static function getIdAndName()
-    {
-        return ArrayHelper::map(self::find()->select('value, id')->asArray()->all(), 'id', 'value');
-    }
-    public static function getIdByValue($value)
-    {
-        return self::find()->select('id')->where(['value' => $value])->scalar();
+        return
+            [
+                [['value'], 'required', 'message' => "необходимо ввести {attribute}"],
+                [['value'], 'integer', 'message' => 'некорректное значение {attribute}'],
+                [['value'], 'in', 'range'  => Repository::getTonnagesList(), 'not' => true, 'message' => 'данный {attribute} уже существует'],
+            ];
     }
 }

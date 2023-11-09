@@ -2,7 +2,6 @@
 
 namespace app\commands;
 
-use app\models\CalculatorForm;
 use yii\console\Controller;
 
 class ProcessController extends Controller
