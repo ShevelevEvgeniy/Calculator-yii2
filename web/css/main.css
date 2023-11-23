@@ -1,16 +1,23 @@
-.nav-item {
+.navbar-nav {
     font-family: 'Anticva';
-    font-size: 15px;
+    font-size: 13px;
 }
 
-h5 {
+.dropdown-item {
+    font-family: 'Montserrat regular';
+    font-size: 13px
+}
+
+/*h5 {*/
+/*    font-family: 'Anticva';*/
+/*    font-size: 20px;*/
+/*}*/
+h6, h5 {
     font-family: 'Anticva';
     font-size: 20px;
 }
-h6, .results {
-    font-family: 'Anticva';
-    font-size: 20px;
-}
+
+
 
 .label {
     font-family: 'Montserrat regular';
@@ -47,14 +54,8 @@ h6, .results {
     font-size: 16px;
 }
 
-
-main {
-    background-color: #f5f5f5;
-}
-
 .tableTonnage, .tableHeader {
     border-right: 2px solid #008000 !important;
-
 }
 
 thead, .tableTonnage {
@@ -62,11 +63,193 @@ thead, .tableTonnage {
     font-size: 15px;
 }
 
+.dataName {
+    font-family: 'Anticva';
+    font-size: 15px;
+}
+
+.dataUser  {
+    font-family: 'Montserrat regular';
+    border-radius: 10px;
+    font-size: 15px;
+}
+
 thead {
     border-bottom: 2px solid #008000 !important;
 }
 
-.tableValue {
+.tableValue, .rowHistory {
     font-family: 'Montserrat regular';
     border-radius: 10px;
+    font-size: 15px;
 }
+
+#signup-form, #login-form {
+    width: 32%;
+    background-color: white;
+    padding: 50px;
+    padding-bottom: 10px;
+    border-radius: 20px;
+    margin-top: 50px;
+    box-shadow: 100px 5px 20px 0px rgba(0, 0, 0, 0.25) !important;
+}
+
+.btn-primary {
+    width: 100%;
+    border: none;
+    border-radius: 50px;
+    background-color: #008000;
+}
+
+.btn-create {
+    color: white;
+    width: 30%;
+    border: none;
+    border-radius: 50px;
+    background-color: #008000;
+}
+.btn-create:hover {
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5) !important;
+    background-color: #008000;
+    color: white;
+    font-size: 16px;
+}
+
+.btn-danger {
+    width: 100%;
+    border: none;
+    border-radius: 50px;
+    background-color: red;
+}
+
+.btn-delete {
+    width: 20%;
+    border: none;
+    border-radius: 50px;
+    background-color: red;
+    color: white;
+}
+.btn-delete:hover {
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5) !important;
+    background-color: red;
+    color: white;
+    font-size: 16px;
+}
+
+.btn-update {
+    width: 30%;
+    border: none;
+    border-radius: 50px;
+    background-color: #008000;
+    color: white;
+}
+
+.btn-update:hover {
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5) !important;
+    background-color: #008000;
+    color: white;
+    font-size: 16px;
+}
+
+.btn-primary:hover {
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5) !important;
+    background-color: #008000;
+    color: white;
+    font-size: 16px;
+}
+
+.form-control {
+    color: rgba(0,0,0,87);
+    border-bottom-color: rgba(0,0,0,42);
+    box-shadow: none !important;
+    border: none;
+    border-bottom: 1px solid;
+    border-radius: 4px 4px 0 0;
+}
+
+@media only screen and (max-width:600px){
+    form{
+        width: 100% !important;
+    }
+}
+
+h4 {
+    font-family: 'Anticva';
+    font-size: 20px;
+}
+
+.hrefLogin {
+    margin-bottom: 0rem !important;
+    font-family: 'Montserrat regular';
+    font-size: 15px;
+}
+
+.hrefLogin a {
+    text-decoration: none;
+}
+
+.dropdownMain {
+    border-color: #008000;
+    border-width: 1px;
+    border-radius: 10px;
+    box-shadow: 50px 5px 20px 0px rgba(0, 0, 0, 0.25) !important;
+
+}
+
+.tableHistory {
+    border-color: #008000;
+    border-width: 1px;
+    border-radius: 10px;
+    box-shadow: 50px 5px 20px 0px rgba(0, 0, 0, 0.25) !important;
+}
+
+.card {
+    border-color: #008000;
+    border-width: 1px;
+    border-radius: 10px;
+    box-shadow: 50px 5px 20px 0px rgba(0, 0, 0, 0.25) !important;
+}
+
+.table a {
+    text-decoration: none;
+    color: black;
+}
+
+.firstColumnInHistory {
+    border-right: 2px solid #008000 !important;
+}
+
+.tableInfo, .tableInfoValue {
+    font-family: 'Montserrat regular';
+    font-size: 20px;
+    color: black;
+}
+
+.tableLink {
+    font-family: 'Montserrat regular';
+    font-size: 18px;
+    text-decoration: none;
+}
+
+.tableHistory .form-select {
+    font-family: 'Montserrat regular';
+    font-size: 15px !important;
+}
+
+.formHistory {
+    border-radius: 10px;
+    width: 100px;
+    font-family: 'Montserrat regular';
+    border-radius: 10px;
+    border-width: 2px;
+    border-color: #008000 !important;
+}
+
+.form-label {
+    margin-bottom: 0px !important;
+}
+
+.align-middle {
+    height: 0px;
+}
+

@@ -6,10 +6,10 @@ use yii\base\Model;
 
 class UpdatePrice extends Model
 {
-    public $id;
-    public $price;
+    public int $id;
+    public int $price;
 
-    public function rules()
+    public function rules():array
     {
         return [
             [['id', 'price'], 'required', 'message' => "необходимо ввести {attribute}"],

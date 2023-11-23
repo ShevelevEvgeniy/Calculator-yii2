@@ -11,12 +11,18 @@ use yii\web\Response;
 
 class TonnagesController extends Controller
 {
+    private Repository $repository;
+    public function __construct($id, $module, Repository $repository, $config = [])
+    {
+        $this->repository = $repository;
+        parent::__construct($id, $module, $config);
+    }
     public function actionIndex(): array
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
         Yii::$app->getResponse()->setStatusCode(200);
 //        return ArrayHelper::map(Tonnages::find()->select('id, value')->all(), 'id', 'value');
-        return array_values(Repository::getTonnagesList());
+        return array_values($this->repository->getTonnagesList());
     }
 
     public function actionCreate()
@@ -33,7 +39,7 @@ class TonnagesController extends Controller
     public function actionDelete()
     {
         $data = Yii::$app->request->getBodyParam('value');
-        if(in_array($data, Repository::getTonnagesList())) {
+        if(in_array($data, $this->repository->getTonnagesList())) {
             Tonnages::deleteAll("value = $data");
             Yii::$app->getResponse()->setStatusCode(200);
             return ;
