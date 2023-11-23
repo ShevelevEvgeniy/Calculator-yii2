@@ -51,24 +51,24 @@ composer-install:
 spa-install:
 	@docker build --build-arg USER=$(whoami) --build-arg GROUP=$(whoami) \
 	-t ${REGISTRY}/${INDEX}-spa:${IMAGE_TAG} -f ./docker/Dockerfile .
-	@docker run --rm -v $(PWD)/frontend:/app ${REGISTRY}/${INDEX}-spa:${IMAGE_TAG} /bin/sh -c "yarn install"
+	@docker run --rm -v $(PWD)/frontend:/app ${REGISTRY}/${INDEX}-spa:${IMAGE_TAG} yarn install
 
 spa-add:
-	@docker run --rm -v $(PWD)/frontend:/app ${REGISTRY}/${INDEX}-spa:${IMAGE_TAG} /bin/sh -c "yarn add $(pkg)"
+	@docker run --rm -v $(PWD)/frontend:/app ${REGISTRY}/${INDEX}-spa:${IMAGE_TAG} yarn add $(pkg)
 
 spa-remove:
-	@docker run --rm -v $(PWD)/frontend:/app ${REGISTRY}/${INDEX}-spa:${IMAGE_TAG} /bin/sh -c "yarn remove $(pkg)"
+	@docker run --rm -v $(PWD)/frontend:/app ${REGISTRY}/${INDEX}-spa:${IMAGE_TAG} yarn remove $(pkg)
 
-spa-build:
+spa-build:spa-install
 	@rm -rf ./web/app-spa
 	@docker run --rm -v $(PWD)/frontend:/app -v $(PWD)/web:/app-web \
 		-e API_AUTH_KEY=${API_AUTH_KEY} \
 		-e API_BASE_URL=http://localhost:${APP_WEB_PORT}${API_BASE_URL} \
- 		${REGISTRY}/${INDEX}-spa:${IMAGE_TAG} /bin/sh -c "yarn run build"
+ 		${REGISTRY}/${INDEX}-spa:${IMAGE_TAG} yarn run build
 
 spa-dev:
 	@rm -rf ./web/app-spa
 	@docker run --rm -v $(PWD)/frontend:/app -v $(PWD)/web:/app-web \
 		-e API_AUTH_KEY=${API_AUTH_KEY} \
 		-e API_BASE_URL=http://localhost:${APP_WEB_PORT}${API_BASE_URL} \
- 		${REGISTRY}/${INDEX}-spa:${IMAGE_TAG} /bin/sh -c "yarn run dev"
+ 		${REGISTRY}/${INDEX}-spa:${IMAGE_TAG} yarn run dev

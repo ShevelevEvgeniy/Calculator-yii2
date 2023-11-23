@@ -21,6 +21,7 @@ class CalculateController extends Controller
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
 
+        $repository = new Repository();
         $model = new CalculatorFormForApi();
         $data = Yii::$app->request->get();
 
@@ -29,8 +30,8 @@ class CalculateController extends Controller
         $model->month = $data['month'];
 
         if ($model->validate()) {
-            $price = Repository::getResultPriceByNames($model->month, $model->tonnage, $model->raw_type);
-            $price_list = Repository::getListPricesByType($model->raw_type);
+            $price = $repository->getResultPriceByNames($model->month, $model->tonnage, $model->raw_type);
+            $price_list = $repository->getListPricesByType($model->raw_type);
             return ['price' => $price, 'price_list' => [$model->raw_type => $price_list]];
         }
         return $model->getErrors();

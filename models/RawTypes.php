@@ -10,11 +10,12 @@ class RawTypes extends ActiveRecord
 {
     public function rules():array
     {
+        $repository = new Repository();
         return
             [
                 [['name'], 'required', 'message' => "необходимо ввести {attribute}"],
                 [['name'], 'string', 'length' => [3, 24], 'message' => 'не корректное значение {attribute}'],
-                [['name'], 'in', 'range'  => Repository::getRawTypesList(), 'not' => true, 'message' => 'данный {attribute} уже существует'],
+                [['name'], 'in', 'range'  => $repository->getRawTypesList(), 'not' => true, 'message' => 'данный {attribute} уже существует'],
             ];
     }
 }
