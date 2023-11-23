@@ -4,7 +4,6 @@
 /** @var string $content */
 
 use app\assets\AppAsset;
-use app\widgets\Alert;
 use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
@@ -26,12 +25,12 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     <?php $this->head() ?>
 </head>
 <?php $this->beginBody() ?>
-<body class="d-flex flex-column h-100 bg-light"
+<body class="d-flex flex-column h-100 bg-light">
 
 <header id="header">
     <?php
     NavBar::begin([
-        'brandLabel' => '<img src="img/logo.png">',
+        'brandLabel' => '<img src="/img/logo.png" alt="">',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-expand-md border-3 border-white rounded-2 shadow'
@@ -40,21 +39,29 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             'class' => 'justify-content-end'
         ],
     ]);
-
-    echo Nav::widget([
-        'options' => [
-            'class' => 'navbar-nav'],
-        'items' => [
-            ['label' => 'Расчет доставки',
-                'url' => Yii::$app->homeUrl,
+        echo Nav::widget([
+            'options' => ['class' => 'navbar-nav'],
+            'items' => [
+                ['label' => 'Расчет доставки', 'url' => Yii::$app->homeUrl],
+                ['label' => 'вход', 'url' => ['/user/login'], 'visible' => Yii::$app->user->isGuest],
+                ['label' => Yii::$app->user->identity->username, 'items' => [
+                        ['label' => 'Профиль', 'url' => ['/user/profile', 'id' => Yii::$app->user->id], 'linkOptions' => ['class' => 'border-bottom border-1']],
+                        ['label' => 'История расчетов' , 'url' => ['/history/index'], 'linkOptions' => ['class' => 'border-bottom border-1']],
+                        ['label' => 'Пользователи', 'url' => ['/admin/user'], 'linkOptions' => ['class' => 'border-bottom border-1'],
+                            'visible' => Yii::$app->user->can('admin'),],
+                        ['label' => 'Выход', 'options' => ['class' => 'text-danger'], 'url' => ['/user/logout']],
+                    ],
+                    'visible' => !Yii::$app->user->isGuest,
+                    'dropdownOptions' => ['class' => 'dropdownMain'],
+                ],
             ],
-        ],
-    ]);
+        ]);
     NavBar::end();
+
     ?>
 </header>
 
-<main id="main">
+<main id="main" role="main">
     <?= $content ?>
 </main>
 
@@ -74,3 +81,5 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 </body>
 </html>
 <?php $this->endPage() ?>
+
+

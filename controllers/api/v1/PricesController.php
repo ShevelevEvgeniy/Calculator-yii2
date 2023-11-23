@@ -9,10 +9,17 @@ use app\models\UpdatePrice;
 use Exception;
 use Yii;
 use yii\rest\Controller;
+use yii\web\NotFoundHttpException;
 
 
 class PricesController extends Controller
 {
+    private Repository $repository;
+    public function __construct($id, $module, Repository $repository, $config = [])
+    {
+        $this->repository = $repository;
+        parent::__construct($id, $module, $config);
+    }
     public function actionIndex()
     {
         $model = new CalculatorFormForApi();
@@ -22,10 +29,9 @@ class PricesController extends Controller
         $model->tonnage = $data['tonnage'];
         $model->month = $data['month'];
         if ($model->validate()) {
-            $price = Repository::getResultPriceByNames($model->month, $model->tonnage, $model->raw_type);
+            $price = $this->repository->getResultPriceByNames($model->month, $model->tonnage, $model->raw_type);
             if ($price == 0) {
-                Yii::$app->getResponse()->setStatusCode(404);
-                return null;
+                throw new NotFoundHttpException('не найдена стоимость');
             }
             Yii::$app->getResponse()->setStatusCode(200);
             return $price;
@@ -44,7 +50,7 @@ class PricesController extends Controller
 
         try {
             if ($model->validate()) {
-                Repository::createPrice($model->month, $model->raw_type, $model->tonnage, $data['price']);
+                $this->repository->createPrice($model->month, $model->raw_type, $model->tonnage, $data['price']);
                 Yii::$app->getResponse()->setStatusCode(200);
                 return;
             }
@@ -60,7 +66,7 @@ class PricesController extends Controller
         $update_price->id = $data['id'];
         $update_price->price = $data['price'];
         if ($update_price->validate()) {
-            Repository::updatePrices($update_price->id, $update_price->price);
+            $this->repository->updatePrices($update_price->id, $update_price->price);
             Yii::$app->getResponse()->setStatusCode(200);
             return;
         }

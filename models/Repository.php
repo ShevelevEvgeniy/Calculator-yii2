@@ -7,28 +7,31 @@ use yii\helpers\ArrayHelper;
 
 class Repository
 {
-    public static function getMonthsList():array   //получение списка месецов
+    public function getMonthsList():array   //получение списка месецов
     {
-        return ArrayHelper::map(Months::find()
-            ->select('id, name')
+        $query = Months::find()
+            ->select('id, name');
+        return ArrayHelper::map($query->asArray()
             ->all(), 'id', 'name');
     }
 
-    public static function getRawTypesList():array   //получение списка материалов сырья
+    public function getRawTypesList():array   //получение списка материалов сырья
     {
-        return ArrayHelper::map(RawTypes::find()
-            ->select('id, name')
+        $query = RawTypes::find()
+            ->select('id, name');
+        return ArrayHelper::map($query->asArray()
             ->all(), 'id', 'name');
     }
 
-    public static function getTonnagesList():array   //получение списка тоннажей
+    public function getTonnagesList():array   //получение списка тоннажей
     {
-        return ArrayHelper::map(Tonnages::find()
-            ->select('id, value')
+        $query = Tonnages::find()
+            ->select('id, value');
+        return ArrayHelper::map($query->asArray()
             ->all(), 'id', 'value');
     }
 
-    public static function getResultPriceByNames($month, $tonnage, $type):int  //получение стоимости по параметрам
+    public function getResultPriceByNames($month, $tonnage, $type):int  //получение стоимости по параметрам
     {
         return Prices::find()->select('price')
             ->innerJoin('months', 'months.id = prices.month_id')
@@ -39,14 +42,14 @@ class Repository
 
     }
 
-    public static function updatePrices($id, $price)  //запись цены по параметрам
+    public function updatePrices($id, $price)  //запись цены по параметрам
     {
         return (new Query())
             ->createCommand()
             ->update('prices', ['price' => $price], "id = $id")
             ->execute();
     }
-    public static function getListPricesByType(string $raw_type):array
+    public function getListPricesByType(string $raw_type):array
     {
         $raw_type_id = (new Query())->select('id')
             ->from('raw_types')
@@ -68,7 +71,7 @@ class Repository
             return $price_list;
     }
 
-    public static function createPrice($month, $type, $tonnage, $price)
+    public function createPrice($month, $type, $tonnage, $price)
     {
         $id = (new Query())
             ->select('months.id AS month_id, raw_types.id AS raw_type_id, tonnages.id AS tonnage_id')

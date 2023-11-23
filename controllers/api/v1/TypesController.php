@@ -10,12 +10,18 @@ use yii\web\Response;
 
 class TypesController extends Controller
 {
+    private Repository $repository;
+    public function __construct($id, $module, Repository $repository, $config = [])
+    {
+        $this->repository = $repository;
+        parent::__construct($id, $module, $config);
+    }
 
     public function actionIndex(): array
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
         Yii::$app->getResponse()->setStatusCode(200);
-        return array_values(Repository::getRawTypesList());
+        return array_values($this->repository->getRawTypesList());
     }
 
     public function actionCreate()
@@ -32,7 +38,7 @@ class TypesController extends Controller
     public function actionDelete()
     {
         $data = Yii::$app->request->getBodyParam('name');
-        if(in_array($data, Repository::getRawTypesList())) {
+        if(in_array($data, $this->repository->getRawTypesList())) {
             RawTypes::deleteAll("name = '$data'");
             Yii::$app->getResponse()->setStatusCode(200);
             return ;
