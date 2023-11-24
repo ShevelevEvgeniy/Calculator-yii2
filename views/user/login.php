@@ -28,7 +28,7 @@ $this->title = 'регистрация';
         <?= $form->field($login_model, 'password')->passwordInput(); ?>
     </div>
     <div class="md-3">
-        <?= Html::submitButton('Войти', ['class' => 'btn btn-primary mt-4']); ?>
+        <?= Html::submitButton('Войти', ['class' => 'btn btn-primary-log mt-4']); ?>
     </div>
     <div class="text-center mt-2 hrefLogin">
         <div>Еще нет аккаунт?</div>

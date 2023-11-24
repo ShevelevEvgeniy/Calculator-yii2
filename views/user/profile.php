@@ -16,14 +16,15 @@ $this->title = 'Профиль';
                         <img src="/img/account.png"
                              class="rounded-circle img-fluid" style="width: 150px;">
                         <h5 class="mt-3 mb-5"><?= $model->username ?></h5>
-                            <?= Html::a('Журнал расчётов', ['history/index'], ['class' => 'btn btn-primary mb-2']) ?>
-                            <?= Html::beginForm(['user/logout']) . Html::submitButton('Выход', ['class' => 'btn btn-danger']) . Html::endForm() ?>
+                            <?= Html::a('Журнал расчётов', ['history/index'], ['class' => 'btn btn-primary-profile mb-2']) ?>
+                            <?= Html::beginForm(['user/logout']) . Html::submitButton('Выход', ['class' => 'btn btn-danger-profile']) . Html::endForm() ?>
                     </div>
                 </div>
             </div>
 
                 <div class="col-lg-8">
                     <div class="card mb-4">
+                        <h5 class="card-title my-0 pb-4 pt-4 mx-4">Мой профиль</h5>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-3">

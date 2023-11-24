@@ -111,13 +111,13 @@ $this->title = 'История расчетов';
                         return Html::a(Html::img('@web/svg/view.svg'), ['/history/view', 'id' => $model->id]);
                     },
                     'delete' => function ($url, $model, $key) {
-                        return Html::a(Html::img('@web/svg/delete.svg'), $url, [
-                            'title' => Yii::t('yii', 'Delete'),
-                            'aria-label' => Yii::t('yii', 'Delete'),
-                            'data-confirm' => Yii::t('yii', 'Вы уверены, что хотите удалить этот элемент?'),
-                            'data-method' => 'post',
-                            'data-pjax' => '0',
-                        ]);
+                        return Yii::$app->user->can('admin')
+                            ? Html::a(Html::img('@web/svg/delete.svg'), ['/history/delete', 'id' => $model->id], [
+                                'data-confirm' => Yii::t('yii', 'Вы уверены, что хотите удалить этот элемент?'),
+                                'data-method' => 'post',
+                                'data-pjax' => '0',
+                            ])
+                            : '';
                     },
                 ],
             ],
