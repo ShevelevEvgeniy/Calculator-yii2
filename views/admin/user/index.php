@@ -1,5 +1,6 @@
 <?php
 
+use yii\bootstrap5\Alert;
 use yii\helpers\Html;
 use yii\grid\GridView;
 use mdm\admin\components\Helper;
@@ -33,15 +34,40 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Html::a(Html::img('@web/svg/update.svg'),
                             ['/administrator/update', 'id' => $model->id]);
                         },
-                    ]
+                    'delete' => function ($url, $model, $key) {
+                        return Html::a(Html::img('@web/svg/trash.svg'), ['/administrator/delete', 'id' => $model->id], [
+                            'title' => Yii::t('yii', 'Delete'),
+                            'aria-label' => Yii::t('yii', 'Delete'),
+                            'data-confirm' => Yii::t('yii', 'Вы уверены, что хотите удалить этот элемент?'),
+                            'data-method' => 'post',
+                            'data-pjax' => '0',
+                            ]);
+                        },
+                    ],
                 ],
             ],
         ]);
         ?>
 </div>
-<div>
-    <div class = 'col-4 p-0'>
+
+<div class="row d-flex align-items-center">
         <?= Html::a('<span class="btn btn-success">Создать пользователя</span>',
             ['/administrator/create']); ?>
-    </div>
+</div>
+<div class="row d-flex align-items-center mt-2">
+    <?php
+    $flashMessages = [
+        'success-delete' => ['class' => 'alert-success'],
+        'error-delete' => ['class' => 'alert-danger'],
+    ];
+
+    foreach ($flashMessages as $key => $config) {
+        if (Yii::$app->session->hasFlash($key)) {
+            echo Alert::widget([
+                'options' => ['class' => "col-8 " . $config['class'], 'role' => 'alert'],
+                'body' => Yii::$app->session->getFlash($key),
+            ]);
+        }
+    }
+    ?>
 </div>

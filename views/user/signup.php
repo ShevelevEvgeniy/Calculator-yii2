@@ -35,7 +35,7 @@ $this->title = 'регистрация';
         <?= $form->field($signup_model, 'password_repeat')->passwordInput(); ?>
     </div>
     <div class="md-3">
-        <?= Html::submitButton('Регистрация', ['class' => 'btn btn-primary mt-4']); ?>
+        <?= Html::submitButton('Регистрация', ['class' => 'btn btn-primary-log mt-4']); ?>
     </div>
     <div class="text-center mt-2 hrefLogin">
         <div>Уже есть аккаунт?</div>
